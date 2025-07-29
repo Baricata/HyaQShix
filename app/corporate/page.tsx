@@ -1,332 +1,42 @@
-'use client';
+import type { Metadata } from "next";
+import CorporatePageContent from "./CorporatePageContent";
 
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import { useLanguage } from '../context/LanguageContext';
-import Link from 'next/link';
-import Image from 'next/image';
-import { motion } from 'framer-motion';
-import { useState, useRef, useEffect } from 'react';
-
-export default function Corporate() {
-  const { t, language, corporateTestimonials } = useLanguage();
-  const isJapanese = language === 'ja';
-  const [currentStep, setCurrentStep] = useState(1);
-  const stepRefs = useRef<(HTMLDivElement | null)[]>([null, null, null, null, null, null]);
-  const [isSticky, setIsSticky] = useState(false);
-  const sectionRef = useRef<HTMLElement | null>(null);
-  const sectionStartRef = useRef<HTMLDivElement | null>(null);
-  const sectionEndRef = useRef<HTMLDivElement | null>(null);
-  const [isInFlowSection, setIsInFlowSection] = useState(false);
+// Server-side metadata with canonical URL
+export const metadata: Metadata = {
+  title: "企業連携 | HyaQShiki-百式-",
+  description: "HyaQShiki-百式-の企業連携プログラム。次世代IT人材育成、スポンサー制度、認定パートナー制度をご用意。",
   
-  // Animation variants
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 60 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { duration: 0.8, ease: 'easeOut' }
-    }
-  };
-
-  const staggerContainer = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
-  };
+  // Canonical URL
+  alternates: {
+    canonical: "https://hyaqshiki.com/corporate",
+  },
   
-  // Calculate the progress percentage
-  const progressPercent = `${(currentStep - 1) * 20}%`;
-
-  // Handler for progress steps
-  const handleStepClick = (step: number) => {
-    setCurrentStep(step);
-    // Smooth scroll to the selected step
-    stepRefs.current[step - 1]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
-
-  // Add intersection observer to detect section visibility
-  useEffect(() => {
-    const progressContainer = document.getElementById('flow-progress-container');
-    const headerHeight = 80; // Approximate header height
-    
-    // Observer for the start of the Flow section
-    const sectionStartObserver = new IntersectionObserver(
-      ([entry]) => {
-        // When we enter the section
-        setIsInFlowSection(entry.isIntersecting);
-        if (!entry.isIntersecting) {
-          setIsSticky(false);
-        }
-      },
-      { 
-        rootMargin: `-${headerHeight}px 0px 0px 0px`,
-        threshold: 0.1
-      }
-    );
-    
-    // Observer for the end of the Flow section
-    const sectionEndObserver = new IntersectionObserver(
-      ([entry]) => {
-        // When we reach the end of the section
-        if (entry.isIntersecting) {
-          setIsInFlowSection(false);
-          setIsSticky(false);
-        }
-      },
+  // Open Graph metadata
+  openGraph: {
+    title: "企業連携 | HyaQShiki-百式-",
+    description: "HyaQShiki-百式-の企業連携プログラム。次世代IT人材育成、スポンサー制度、認定パートナー制度をご用意。",
+    url: "https://hyaqshiki.com/corporate",
+    siteName: "HyaQShiki",
+    type: "website",
+    images: [
       {
-        rootMargin: `-${headerHeight}px 0px -100% 0px`,
-        threshold: 0.1
-      }
-    );
-    
-    // Observer for making the progress bar sticky
-    const stickyObserver = new IntersectionObserver(
-      ([entry]) => {
-        // Only make it sticky if we're within the Flow section
-        if (isInFlowSection) {
-          setIsSticky(!entry.isIntersecting);
-        } else {
-          setIsSticky(false);
-        }
+        url: "/images/HyaQShiki.jpg",
+        width: 1200,
+        height: 630,
+        alt: "HyaQShiki 企業連携",
       },
-      { 
-        rootMargin: `-${headerHeight}px 0px 0px 0px`,
-        threshold: 0.1
-      }
-    );
-    
-    // Observe the Flow section
-    if (sectionRef.current) {
-      sectionStartObserver.observe(sectionRef.current);
-    }
-    
-    // Observe the end marker of the Flow section
-    if (sectionEndRef.current) {
-      sectionEndObserver.observe(sectionEndRef.current);
-    }
-    
-    // Observe the progress container for sticky behavior
-    if (progressContainer) {
-      stickyObserver.observe(progressContainer);
-    }
-    
-    // Create observers for each step section
-    const stepObservers = stepRefs.current.map((ref, index) => {
-      if (!ref) return null;
-      
-      const observer = new IntersectionObserver(
-        (entries) => {
-          if (entries[0].isIntersecting) {
-            setCurrentStep(index + 1);
-          }
-        },
-        { 
-          rootMargin: `-${headerHeight + 50}px 0px -50% 0px`,
-          threshold: 0.1
-        }
-      );
-      
-      observer.observe(ref);
-      return observer;
-    });
-    
-    return () => {
-      stickyObserver.disconnect();
-      sectionStartObserver.disconnect();
-      sectionEndObserver.disconnect();
-      stepObservers.forEach(obs => obs?.disconnect());
-    };
-  }, [isInFlowSection]);
+    ],
+  },
   
-  return (
-    <div className="font-['Poppins',sans-serif] bg-black text-white">
-      <Header />
+  // Twitter Card metadata
+  twitter: {
+    card: "summary_large_image",
+    title: "企業連携 | HyaQShiki-百式-",
+    description: "HyaQShiki-百式-の企業連携プログラム。次世代IT人材育成、スポンサー制度、認定パートナー制度をご用意。",
+    images: ["/images/HyaQShiki.jpg"],
+  },
+};
 
-      {/* Hero Section */}
-      <section className="relative bg-cover bg-center py-32" style={{ backgroundImage: 'url(/images/slide5.jpg)' }}>
-        <div className="absolute inset-0 bg-black opacity-60" />
-        <motion.div 
-          className="relative z-10 max-w-4xl mx-auto px-4 text-center"
-          initial="hidden"
-          animate="visible"
-          variants={staggerContainer}
-        >
-          <motion.h1 
-            className="text-4xl md:text-5xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-white to-yellow-200"
-            variants={fadeInUp}
-          >
-            {t('corporate.title')}
-          </motion.h1>
-          <motion.p 
-            className="text-xl text-yellow-50"
-            variants={fadeInUp}
-          >
-            {t('corporate.subtitle')}
-          </motion.p>
-        </motion.div>
-      </section>
-
-      {/* Certified Partner */}
-      <section className="py-20 bg-black text-white">
-        <motion.div 
-          className="max-w-5xl mx-auto px-4"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={staggerContainer}
-        >
-          <motion.h2 
-            className="text-3xl font-bold text-center mb-4"
-            variants={fadeInUp}
-          >
-          {t('corporate.benefits.title')}
-          </motion.h2>
-          <motion.div 
-            className="w-24 h-1 bg-yellow-400 mx-auto mb-10"
-            variants={fadeInUp}
-          ></motion.div>
-          
-          <motion.div 
-            className="backdrop-blur-sm bg-white/5 border border-white/10 rounded-lg p-8 shadow-xl"
-            variants={fadeInUp}
-          >
-            <h3 className="text-2xl font-semibold mb-6 text-yellow-400 text-center">
-              {t('corporate.subtitle')}
-            </h3>
-            <p className="text-lg mb-10 text-gray-300 text-center max-w-3xl mx-auto">
-              {t('corporate.sponsor.desc')}
-            </p>
-            
-            <div className="grid md:grid-cols-2 gap-6">
-              <motion.div 
-                className="backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl p-6 border-l-4 border-yellow-400"
-                whileHover={{ y: -8, transition: { duration: 0.3 } }}
-              >
-                <h4 className="text-yellow-400 mb-3 text-xl">
-                  {t('corporate.benefits.b1.title')}
-                </h4>
-                <p className="text-gray-300">
-                  {t('corporate.benefits.b1.desc')}
-                </p>
-              </motion.div>
-              <motion.div 
-                className="backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl p-6 border-l-4 border-yellow-400"
-                whileHover={{ y: -8, transition: { duration: 0.3 } }}
-              >
-                <h4 className="text-yellow-400 mb-3 text-xl">
-                  {t('corporate.benefits.b2.title')}
-                </h4>
-                <p className="text-gray-300">
-                  {t('corporate.benefits.b2.desc')}
-                </p>
-              </motion.div>
-              <motion.div 
-                className="backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl p-6 border-l-4 border-yellow-400"
-                whileHover={{ y: -8, transition: { duration: 0.3 } }}
-              >
-                <h4 className="text-yellow-400 mb-3 text-xl">
-                  {t('corporate.benefits.b3.title')}
-                </h4>
-                <p className="text-gray-300">
-                  {t('corporate.benefits.b3.desc')}
-                </p>
-              </motion.div>
-              <motion.div 
-                className="backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl p-6 border-l-4 border-yellow-400"
-                whileHover={{ y: -8, transition: { duration: 0.3 } }}
-              >
-                <h4 className="text-yellow-400 mb-3 text-xl">
-                  {t('corporate.benefits.b4.title')}
-                </h4>
-                <p className="text-gray-300">
-                  {t('corporate.benefits.b4.desc')}
-                </p>
-              </motion.div>
-            </div>
-          </motion.div>
-        </motion.div>
-      </section>
-
-      {/* Partner Testimonials */}
-      <section className="py-20 bg-black text-white relative overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full opacity-10 blur-3xl bg-yellow-500"></div>
-        
-        <motion.div 
-          className="max-w-5xl mx-auto px-4 relative z-10"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={staggerContainer}
-        >
-          <motion.h2 
-            className="text-3xl font-bold text-center mb-4"
-            variants={fadeInUp}
-          >
-            {t('partner.testimonials.title')}
-          </motion.h2>
-          <motion.div 
-            className="w-24 h-1 bg-yellow-400 mx-auto mb-10"
-            variants={fadeInUp}
-          ></motion.div>
-          
-          <div className="grid md:grid-cols-2 gap-8">
-            {corporateTestimonials.testimonials.map((testimonial, index) => (
-              <motion.div 
-                key={index}
-                className="backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl p-8"
-                variants={fadeInUp}
-                whileHover={{ y: -8, transition: { duration: 0.3 } }}
-              >
-                <p className="text-gray-300 text-lg italic mb-6 leading-relaxed">
-                  {language === 'ja' ? testimonial.content.ja : testimonial.content.en}
-                </p>
-                <div className="border-t border-yellow-400 border-opacity-20 pt-4">
-                  <h4 className="text-yellow-400 font-bold">
-                    {language === 'ja' ? testimonial.name.ja : testimonial.name.en}
-                  </h4>
-                  <p className="text-gray-400">
-                    {language === 'ja' ? testimonial.position.ja : testimonial.position.en}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-8 bg-black text-white relative overflow-hidden">
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full opacity-10 blur-3xl bg-yellow-500"></div>
-        
-        <motion.div 
-          className="max-w-4xl mx-auto px-4 text-center relative z-10"
-          initial={{ opacity: 0, y: 60 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          <h2 className="text-3xl font-bold mb-4">
-            {t('corporate.cta.title')}
-          </h2>
-
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <motion.a 
-              href="/contact"
-              className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white px-8 py-3 rounded-lg font-bold transition-transform duration-300"
-              whileHover={{ scale: 1.05 }}
-            >
-              {t('corporate.cta.contact')}
-            </motion.a>
-          </div>
-        </motion.div>
-      </section>
-
-      <Footer />
-    </div>
-  );
+export default function CorporatePage() {
+  return <CorporatePageContent />;
 }

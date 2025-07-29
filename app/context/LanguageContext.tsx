@@ -112,6 +112,11 @@ type TranslationKeys =
   | 'curriculum.metrics.main.title' | 'curriculum.metrics.main.desc'
   | 'curriculum.cta.title' | 'curriculum.cta.subtitle' | 'curriculum.cta.free_trial' | 'curriculum.cta.pricing'
   
+  // Timeline keys
+  | 'curriculum.timeline.title' | 'curriculum.timeline.days1.title' | 'curriculum.timeline.days1.desc'
+  | 'curriculum.timeline.days2.title' | 'curriculum.timeline.days2.desc' | 'curriculum.timeline.days3.title' | 'curriculum.timeline.days3.desc'
+  | 'curriculum.timeline.days4.title' | 'curriculum.timeline.days4.desc'
+  
   // Pricing Page
   | 'pricing.title' | 'pricing.subtitle' | 'pricing.plans.title' | 'pricing.plans.desc'
   | 'pricing.plans.basic.title' | 'pricing.plans.basic.badge' | 'pricing.plans.basic.feature1'
@@ -1163,6 +1168,17 @@ const en: TranslationsType = {
   'corporate.testimonials.person2.position': 'CTO, Innovation Inc.',
   'corporate.testimonials.person2.content': 'HyaQShiki\'s program provides education closely linked to real-world business practices.',
 
+  // Timeline keys
+  'curriculum.timeline.title': 'Timeline (Example)',
+  'curriculum.timeline.days1.title': 'Day1-10: Foundation',
+  'curriculum.timeline.days1.desc': 'HTML/CSS/JavaScript basics + AI-assisted initial output experience',
+  'curriculum.timeline.days2.title': 'Day11-40: Daily App Creation',
+  'curriculum.timeline.days2.desc': 'Create one practical app every day using generative AI',
+  'curriculum.timeline.days3.title': 'Day41-70: Thematic Deep Dive',
+  'curriculum.timeline.days3.desc': 'Industry-specific, advanced design, UI/UX, security, API integration, etc.',
+  'curriculum.timeline.days4.title': 'Day71-100: Final Production and Publication',
+  'curriculum.timeline.days4.desc': 'Create multiple culminating apps, publish, share, review, and earn certification',
+
   // Satisfaction Guarantee Badge
   'home.satisfaction.badge': 'Service Quality Guarantee',
 
@@ -1333,16 +1349,6 @@ const en: TranslationsType = {
   'contact.partnership.flow.deliverable.desc': 'After project completion, deliverables will be submitted and a final report meeting will be held. Students will present their work and answer questions.',
   'contact.partnership.flow.feedback': 'Feedback',
   'contact.partnership.flow.feedback.desc': 'After project completion, feedback will be collected from both company and students and used for future improvements. We will also consider ongoing partnerships.',
-
-  // Mission, Vision, Values
-  'philosophy.mission.title': 'Mission',
-  'philosophy.mission.desc': 'Transform AI into a powerful tool and nurture talent that maximizes creativity.',
-  'philosophy.vision.title': 'Vision',
-  'philosophy.vision.desc': 'Realize a society where anyone can become an innovator through the democratization of technology.',
-  'philosophy.values.title': 'Values',
-  'philosophy.values.v1': 'Practice First: Learning comes from action.',
-  'philosophy.values.v2': 'Co-Creation: Teach and learn together.',
-  'philosophy.values.v3': 'Future-Oriented: Always pursue the next innovation.',
 
  };
 
